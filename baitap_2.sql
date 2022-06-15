@@ -53,6 +53,63 @@ go
 exec cau1 2
 
 
+--- cau 2
+use Northwind
+
+create trigger NiggaCau2 on Products instead of insert
+as 
+	declare @UnitTest float
+	select @UnitTest = UnitPrice
+	from inserted
+	if @UnitTest >= 10
+		INSERT INTO [dbo].[Products]
+           ([ProductName]
+           ,[SupplierID]
+           ,[CategoryID]
+           ,[QuantityPerUnit]
+           ,[UnitPrice]
+           ,[UnitsInStock]
+           ,[UnitsOnOrder]
+           ,[ReorderLevel]
+           ,[Discontinued])
+     (
+		select [ProductName]
+           ,[SupplierID]
+           ,[CategoryID]
+           ,[QuantityPerUnit]
+           ,[UnitPrice]
+           ,[UnitsInStock]
+           ,[UnitsOnOrder]
+           ,[ReorderLevel]
+           ,[Discontinued]
+		from inserted
+	)
+	else
+		raiserror('unit test < 10, khong hop le', 16, 1)
+go 
+
+INSERT INTO [dbo].[Products]
+           ([ProductName]
+           ,[SupplierID]
+           ,[CategoryID]
+           ,[QuantityPerUnit]
+           ,[UnitPrice]
+           ,[UnitsInStock]
+           ,[UnitsOnOrder]
+           ,[ReorderLevel]
+           ,[Discontinued])
+     VALUES
+           ('asdasd'
+           ,1
+           ,2
+           ,25
+           ,1
+           ,1
+           ,1
+           ,1
+           ,1)
+GO
+
 
 
 --- de 2  phan 2  cau 1
